@@ -63,12 +63,7 @@ Pada berkas `Ratings.csv` memuat data rating buku yang diberikan oleh pengguna. 
  - `ISBN` : berisi kode ISBN buku yang diberi rating oleh pengguna
  - `Book-Rating` : berisi nilai rating yang diberikan oleh pengguna berkisar antara 0-10
 
-   | Column       Non-Null Count    Dtype 
----  ------       --------------    ----- 
- 0   User-ID      1149780 non-null  int64 
- 1   ISBN         1149780 non-null  object
- 2   Book-Rating  1149780 non-null  int64 
-dtypes: int64(2), object(1)
+![alt text](https://github.com/rosaliaa20/system-rekomendasi/blob/main/Gambar/ratings.png?raw=true)
 
 Pada data `Rating` ini juga ditemukan bahwa `User-ID` berupa ID angka yang berukuran cukup besar. Lalu `ISBN` merupakan string unik identitas buku gabungan angka dan huruf. Kedua nilai ini nantinya perlu dilakukan encoding agar dapat menghasilkan rekomendasi. Data rating ini juga merupakan data utama dalam membuat sistem rekomendasi dengan Collaborative Filtering pada proyek ini.
 
@@ -80,19 +75,8 @@ Pada berkas `Users.csv` memuat data pengguna. Data ini terdiri dari 278.858 bari
 
 Berikut ini adalah hasil dari visualiasi jumlah rating buku yang diberikan oleh user.
 
-|Book-Rating|User-ID|ISBN|
-|---|---|---|
-|0|716109|716109|
-|1|1770|1770|
-|2|2759|2759|
-|3|5996|5996|
-|4|8904|8904|
-|5|50974|50974|
-|6|36924|36924|
-|7|76457|76457|
-|8|103736|103736|
-|9|67541|67541|
-|10|78610|78610|
+![alt text](https://github.com/rosaliaa20/system-rekomendasi/blob/main/Gambar/user.png?raw=true)
+
 
 Pada data di atas dapat diketahui bahwa mayoritas user - ada lebih dari 700 ribu yang memberikan rating 0 pada buku sehingga data ini dikatakan tidak seimbang *(imbalance)*. Untuk itu pada data ini nantinya akan dilakukan penanganan agar dapat lebih seimbang.
 
@@ -112,41 +96,19 @@ Beberapa properti yang digunakan dalam kelas RecommenderNet dan menjadi paramete
 - `num_isbn` : jumlah data buku, dihitung berdasarkan ISBN
 - `embedding_size` : ukuran atau dimensi yang digunakan dalam embedding pada data user dan buku
 
-Pertama, kita melakukan proses embedding terhadap data user dan buku. Jumlah user dan buku yang didefinisikan pada `num_users` dan `num_isbn` bertujuan sebagai input untuk membuat vektor embedding keduanya. Sedangkan `embedding_size` menentukan ukuran atau dimensi embedding yang dibuat. Semakin besar nilai dari `embedding_size` akan membuat model semakin akurat, namun jika berlebihan akan mengakibatkan model menjadi overfit. Untuk itu pada proyek ini juga menggunakan `optuna` untuk mencari nilai yang optimal. Selanjutnya, dilakukan operasi perkalian *dot product* antara embedding user dan buku. Selain itu, kita juga dapat menambahkan bias untuk setiap user dan buku. Skor kecocokan ditetapkan dalam skala [0,1] dengan fungsi aktivasi sigmoid.
+Pertama, kita melakukan proses embedding terhadap data user dan buku. Jumlah user dan buku yang didefinisikan pada num_users dan num_isbn bertujuan sebagai input untuk membuat vektor embedding keduanya. Sedangkan embedding_size menentukan ukuran atau dimensi embedding yang dibuat. Semakin besar nilai dari embedding_size akan membuat model semakin akurat, namun jika berlebihan akan mengakibatkan model menjadi overfit. Untuk itu pada proyek ini juga menggunakan optuna untuk mencari nilai yang optimal. Selanjutnya, dilakukan operasi perkalian dot product antara embedding user dan buku. Selain itu, kita juga dapat menambahkan bias untuk setiap user dan buku. Skor kecocokan ditetapkan dalam skala [0,1] dengan fungsi aktivasi sigmoid.
 
-Model ini juga di-compile dengan fungsi loss binarycrossentropy dan menggunakan Adam sebagai optimizer dengan learning rate sebesar 0.001
+Model ini dikompilasi menggunakan fungsi `loss MeanSquaredError()`, yang cocok digunakan untuk kasus regresi seperti prediksi rating. Fungsi ini menghitung rata-rata selisih kuadrat antara nilai prediksi dan nilai aktual. Optimizer yang digunakan adalah Adam dengan learning rate sebesar 0.001, yang dikenal stabil dan efektif untuk mempercepat proses konvergensi dalam pelatihan model.
 
 Model yang telah dibuat dapat menghasilkan top-10 rekomendasi buku seperti berikut ini.
 
-4676/4676 ━━━━━━━━━━━━━━━━━━━━ 3s 689us/step
-Rekomendasi untuk User ID: 129008
-==============================
-
-Buku dengan rating tertinggi dari user:
-----------------------------------------
-The Slippery Slope (A Series of Unfortunate Events, Book 10) - Lemony Snicket
-The Honk and Holler Opening Soon - Billie Letts
-The Iron Tonic: Or, A Winter Afternoon in Lonely Valley - Edward Gorey
-The Day Jimmy's Boa Ate the Wash - Trinka Hakes Noble
-Cypress Grove - James Sallis
-
-Rekomendasi Buku Terbaik untuk User Ini:
-----------------------------------------
-Lonesome Dove - Larry McMurtry
-The Return of the King (The Lord of the Rings, Part 3) - J.R.R. TOLKIEN
-Harry Potter and the Sorcerer's Stone (Book 1) - J. K. Rowling
-The Two Towers (The Lord of the Rings, Part 2) - J. R. R. Tolkien
-The Giving Tree - Shel Silverstein
-Calvin and Hobbes - Bill Watterson
-52 Deck Series: 52 Ways to Celebrate Friendship - Lynn Gordon
-My Sister's Keeper : A Novel (Picoult, Jodi) - Jodi Picoult
-Dilbert: A Book of Postcards - Scott Adams
-Harry Potter and the Chamber of Secrets Postcard Book - J. K. Rowling
+![alt text](https://github.com/rosaliaa20/system-rekomendasi/blob/main/Gambar/output.png?raw=true)
 
 ## Evaluation
 Pada proyek ini menggunakan metrik RMSE (Root Mean Square Error) untuk mengevaluasi kinerja model yang dihasilkan. RMSE adalah cara standar untuk mengukur kesalahan model dalam memprediksi data kuantitatif [[2](https://towardsdatascience.com/what-does-rmse-really-mean-806b65f2e48e)]. Root Mean Squared Error (RMSE) mengevaluasi model regresi linear dengan mengukur tingkat akurasi hasil perkiraan suatu model. RMSE dihitung dengan mengkuadratkan error (prediksi – observasi) dibagi dengan jumlah data (= rata-rata), lalu diakarkan. Perhitungan RMSE ditunjukkan pada rumus berikut ini.
 
-![RMSE](https://i.postimg.cc/tgjfntZk/RMSE.png) 
+![alt text](https://github.com/rosaliaa20/system-rekomendasi/blob/main/Gambar/rumus.png?raw=true)
+
 
 `RMSE` = nilai root mean square error
 
@@ -162,10 +124,22 @@ Nilai RMSE rendah menunjukkan bahwa variasi nilai yang dihasilkan oleh suatu mod
 
 Berikut ini adalah plot metrik RMSE setelah proses pelatihan model.
 
-![Model Metrics](https://i.postimg.cc/m2n2YY5W/Model-Metrics.png)
+![alt text](https://github.com/rosaliaa20/system-rekomendasi/blob/main/Gambar/matrik.png?raw=true)
 
-Pada plot di atas dapat diketahui bahwa model memiliki skor nilai RMSE sebesar 0.185 yang mana bisa dikatakan sudah cukup bagus. Namun, meskipun begitu masih dapat dikembangkan lebih lanjut untuk meminimalkan error.
 
+Pada plot di atas model menunjukkan peningkatan performa selama pelatihan, ditandai dengan:
+
+- RMSE pada data training terus menurun secara konsisten.
+- RMSE pada data validasi menurun di awal dan stabil mendekati 0.19, tanpa overfitting yang jelas.
+
+Artinya, model belajar dengan baik dan generalisasi cukup baik terhadap data yang belum pernah dilihat. Model berhenti secara otomatis di epoch ke-19 karena tidak ada peningkatan signifikan, sesuai pengaturan EarlyStopping.
+
+Meski demikian, pengembangan lanjutan masih diperlukan, seperti:
+
+- Integrasi fitur tambahan (misalnya genre, sinopsis, metadata buku),
+- Penggabungan pendekatan hybrid (content-based + collaborative),
+- Evaluasi berbasis umpan balik pengguna nyata (user feedback).
+Dengan penyempurnaan tersebut, sistem ini dapat menjadi solusi rekomendasi yang lebih komprehensif dan adaptif terhadap kebutuhan pengguna.
 ## Referensi
 
 [[1](https://www.tribunnews.com/nasional/2021/03/22/tingkat-literasi-indonesia-di-dunia-rendah-ranking-62-dari-70-negara)] Utami, L. D. (2021). *Tingkat Literasi Indonesia di Dunia Rendah, Ranking 62 Dari 70 Negara*. Tribunnews. https://www.tribunnews.com/nasional/2021/03/22/tingkat-literasi-indonesia-di-dunia-rendah-ranking-62-dari-70-negara
