@@ -142,7 +142,7 @@ Meski demikian, pengembangan lanjutan masih diperlukan, seperti:
 Dengan penyempurnaan tersebut, sistem ini dapat menjadi solusi rekomendasi yang lebih komprehensif dan adaptif terhadap kebutuhan pengguna.
 ## Referensi
 
-[[1](https://www.tribunnews.com/nasional/2021/03/22/tingkat-literasi-indonesia-di-dunia-rendah-ranking-62-dari-70-negara)] Utami, L. D. (2021). *Tingkat Literasi Indonesia di Dunia Rendah, Ranking 62 Dari 70 Negara*. Tribunnews. https://www.tribunnews.com/nasional/2021/03/22/tingkat-literasi-indonesia-di-dunia-rendah-ranking-62-dari-70-negara
+[1] UNESCO Institute for Statistics, “Literacy Rates Continue to Rise from One Generation to the Next,” UIS Fact Sheet, September 2017, no. 45. [Online]. Available: http://uis.unesco.org/sites/default/files/documents/fs45-literacy-rates-continue-rise-generation-to-next-en-2017_0.pdf
 
-[[2](https://towardsdatascience.com/what-does-rmse-really-mean-806b65f2e48e)] Moody, J. (2019). *What does RMSE really mean?*. Towards Data Science. https://towardsdatascience.com/what-does-rmse-really-mean-806b65f2e48e
+[2] Chai, T., & Draxler, R. R. (2014). “Root mean square error (RMSE) or mean absolute error (MAE)? – Arguments against avoiding RMSE in the literature.” *Geoscientific Model Development*, 7(3), 1247–1250. https://doi.org/10.5194/gmd-7-1247-2014
 
